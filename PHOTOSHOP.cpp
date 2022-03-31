@@ -25,7 +25,12 @@ void BW();
 void invertFilter();
 void mergeImage();
 void flipImage();
+<<<<<<< HEAD
+void rotate();
+
+=======
 void darkenAndLightenImage();
+>>>>>>> master
 int main()
 {
     cout << "Ahlan ya user ya habibi\n";
@@ -48,8 +53,14 @@ int main()
     case 52:
         flipImage();
         break;
+<<<<<<< HEAD
+    case 54:
+        rotate();
+        break;
+=======
     case 53:
         darkenAndLightenImage();
+>>>>>>> master
     default:
         break;
     }
@@ -110,10 +121,11 @@ void saveImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    if (userInput == '4')
+    if (userInput == '4' || userInput == '6' )
         writeGSBMP(imageFileName, image2);
-    else
+    else {
         writeGSBMP(imageFileName, image);
+    }
 }
 
 //_________________________________________
@@ -161,12 +173,14 @@ void mergeImage(){
 }
 //_________________________________________
 void flipImage(){
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-                image2[i][j] = image[255-i][255-j];
+    for (int i =0 ;i <255 ;i++){
+        for (int j =0 ;j <255 ;j++){
+            image2[i][j] = image [225-i][j];
         }
-    }
-} 
+    } 
+}
+
+
 //_________________________________________
 void darkenAndLightenImage(){
     int chooses;
@@ -206,3 +220,41 @@ void darkenAndLightenImage(){
     }
 
 }
+
+//_________________________________________
+void rotate(){
+    int rot;
+    cout << "Enter the degree from (90, 180, 270) to rotate: ";
+    cin >> rot;
+    if (rot == 180){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                image2[i][j] = image[255-i][255-j];
+            }
+        }
+    }
+    else if (rot == 90){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j <= SIZE - i; j++) {
+                swap(image[i][j], image[SIZE - j][SIZE - i]);
+            }
+        }
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                image2[i][j] = image[255-i][j];
+            }
+        }
+    }
+    else if (rot == 270){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j <= SIZE - i; j++) {
+                swap(image[i][j], image[SIZE - j][SIZE - i]);
+            }
+        }
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                image2[i][j] = image[i][255-j];
+            }
+        }
+    }
+} 
