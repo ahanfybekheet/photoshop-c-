@@ -22,7 +22,7 @@ void loadImage();
 void saveImage();
 void BW();
 void invertFilter();
-
+void mergeImage();
 
 int main()
 {
@@ -39,6 +39,9 @@ int main()
         break;
     case 50:
         invertFilter();
+        break;
+    case 51:
+        mergeImage();
         break;
     default:
         break;
@@ -123,6 +126,27 @@ void invertFilter(){
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             image[i][j] = 255 - image[i][j];
+        }
+    }
+}
+//_________________________________________
+void mergeImage(){
+    //Load seconde Image
+    unsigned char mergedImage[SIZE][SIZE];
+    char mergedImageFileName[100];
+
+    // Get the seconde photo that want to be merged
+    cout << "Please enter file name of the image to merge: ";
+    cin >> mergedImageFileName;
+
+    // Add to it .bmp extension and load image
+    strcat(mergedImageFileName, ".bmp");
+    readGSBMP(mergedImageFileName, mergedImage);
+
+    //Merge Two Photos
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+                image[i][j] = image[i][j] + (mergedImage[i][j]/2);
         }
     }
 }
