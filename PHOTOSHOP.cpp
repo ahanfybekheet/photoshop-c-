@@ -14,6 +14,7 @@
 
 using namespace std;
 unsigned char image[SIZE][SIZE];
+unsigned char image2[SIZE][SIZE];
 char userInput;
 
 
@@ -23,6 +24,7 @@ void saveImage();
 void BW();
 void invertFilter();
 void mergeImage();
+void flipImage();
 
 int main()
 {
@@ -42,6 +44,9 @@ int main()
         break;
     case 51:
         mergeImage();
+        break;
+    case 52:
+        flipImage();
         break;
     default:
         break;
@@ -104,7 +109,10 @@ void saveImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    writeGSBMP(imageFileName, image);
+    if (userInput == '4')
+        writeGSBMP(imageFileName, image2);
+    else
+        writeGSBMP(imageFileName, image);
 }
 
 //_________________________________________
@@ -132,7 +140,6 @@ void invertFilter(){
 //_________________________________________
 void mergeImage(){
     //Load seconde Image
-    unsigned char mergedImage[SIZE][SIZE];
     char mergedImageFileName[100];
 
     // Get the seconde photo that want to be merged
@@ -141,12 +148,20 @@ void mergeImage(){
 
     // Add to it .bmp extension and load image
     strcat(mergedImageFileName, ".bmp");
-    readGSBMP(mergedImageFileName, mergedImage);
+    readGSBMP(mergedImageFileName, image2);
 
     //Merge Two Photos
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-                image[i][j] = image[i][j] + (mergedImage[i][j]/2);
+                image[i][j] = image[i][j] + (image2[i][j]/2);
         }
     }
 }
+//_________________________________________
+void flipImage(){
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+                image2[i][j] = image[255-i][255-j];
+        }
+    }
+} 
