@@ -14,6 +14,7 @@
 
 using namespace std;
 unsigned char image[SIZE][SIZE];
+unsigned char image2[SIZE][SIZE];
 char userInput;
 
 
@@ -21,6 +22,10 @@ void menuDisplay();
 void loadImage();
 void saveImage();
 void BW();
+void invertFilter();
+void mergeImage();
+void flipImage();
+
 int main()
 {
     cout << "Ahlan ya user ya habibi\n";
@@ -34,6 +39,15 @@ int main()
     case 49:
         BW();
         break;
+    case 50:
+        invertFilter();
+        break;
+    case 51:
+        mergeImage();
+        break;
+    case 52:
+        flipImage();
+        break;
     default:
         break;
     }
@@ -42,48 +56,6 @@ int main()
 }
 
 //_________________________________________
-void loadImage() {
-    char imageFileName[100];
-
-    // Get gray scale image file name
-    cout << "Ahlan ya user ya habibi";
-    cout << "Please enter file name of the image to process: ";
-    cin >> imageFileName;
-
-    // Add to it .bmp extension and load image
-    strcat(imageFileName, ".bmp");
-    readGSBMP(imageFileName, image);
-}
-
-//_________________________________________
-void saveImage() {
-    char imageFileName[100];
-
-    // Get gray scale image target file name
-    cout << "Enter the target image file name: ";
-    cin >> imageFileName;
-
-    // Add to it .bmp extension and load image
-    strcat(imageFileName, ".bmp");
-    writeGSBMP(imageFileName, image);
-}
-
-//_________________________________________
-void BW() {
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            if (image[i][j] > 127) {
-                image[i][j] = 255;
-            }
-            else {
-                image[i][j] = 0;
-            }
-
-        }
-    }
-}
-
-
 void menuDisplay() {
 
     cout << "Please select a filter to apply or 0 to exit: \nNote: The Answer Is Only One Char 'The App Will Take Only First Char'\n";
@@ -112,5 +84,85 @@ void menuDisplay() {
             cin.ignore();
         }
     }
-    cout << "fuck world";
+}
+//_________________________________________
+void loadImage() {
+    char imageFileName[100];
+
+    // Get gray scale image file name
+    cout << "Ahlan ya user ya habibi";
+    cout << "Please enter file name of the image to process: ";
+    cin >> imageFileName;
+
+    // Add to it .bmp extension and load image
+    strcat(imageFileName, ".bmp");
+    readGSBMP(imageFileName, image);
+}
+
+//_________________________________________
+void saveImage() {
+    char imageFileName[100];
+
+    // Get gray scale image target file name
+    cout << "Enter the target image file name: ";
+    cin >> imageFileName;
+
+    // Add to it .bmp extension and load image
+    strcat(imageFileName, ".bmp");
+    if (userInput == '4')
+        writeGSBMP(imageFileName, image2);
+    else
+        writeGSBMP(imageFileName, image);
+}
+
+//_________________________________________
+void BW() {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (image[i][j] > 127) {
+                image[i][j] = 255;
+            }
+            else {
+                image[i][j] = 0;
+            }
+
+        }
+    }
+}
+
+//_________________________________________
+void invertFilter(){
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = 255 - image[i][j];
+        }
+    }
+}
+//_________________________________________
+void mergeImage(){
+    //Load seconde Image
+    char mergedImageFileName[100];
+
+    // Get the seconde photo that want to be merged
+    cout << "Please enter file name of the image to merge: ";
+    cin >> mergedImageFileName;
+
+    // Add to it .bmp extension and load image
+    strcat(mergedImageFileName, ".bmp");
+    readGSBMP(mergedImageFileName, image2);
+
+    //Merge Two Photos
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+                image[i][j] = image[i][j] + (image2[i][j]/2);
+        }
+    }
+}
+//_________________________________________
+void flipImage(){
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+                image2[i][j] = image[255-i][255-j];
+        }
+    }
 }
