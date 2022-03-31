@@ -21,6 +21,9 @@ void menuDisplay();
 void loadImage();
 void saveImage();
 void BW();
+void invertFilter();
+
+
 int main()
 {
     cout << "Ahlan ya user ya habibi\n";
@@ -34,6 +37,9 @@ int main()
     case 49:
         BW();
         break;
+    case 50:
+        invertFilter();
+        break;
     default:
         break;
     }
@@ -41,6 +47,36 @@ int main()
     return 0;
 }
 
+//_________________________________________
+void menuDisplay() {
+
+    cout << "Please select a filter to apply or 0 to exit: \nNote: The Answer Is Only One Char 'The App Will Take Only First Char'\n";
+    while (true) {
+        cout << "\t1- Black & White Filter" << endl;
+        cout << "\t2- Invert Filter" << endl;
+        cout << "\t3- Merge Filter" << endl;
+        cout << "\t4- Flip Image" << endl;
+        cout << "\t5- Darken and Lighten Image" << endl;
+        cout << "\t6- Rotate Image" << endl;
+        cout << "\t7- Detect Image Edges" << endl;
+        cout << "\t8- Enlarge Image" << endl;
+        cout << "\t9- Shrink Image" << endl;
+        cout << "\ta- Mirror 1/2 Image" << endl;
+        cout << "\tb- Shuffle Image" << endl;
+        cout << "\tc- Blur Image" << endl;
+        cout << "\ts- save the image to file" << endl;
+        cout << "\t0- Exit" << endl;
+        cout << "-->";
+
+        cin >> userInput;
+        if ((userInput >= 48 && userInput <= 57) || (userInput == 97 || userInput == 98 || userInput == 99 || userInput == 115))
+            break;
+        else {
+            cout << "Please enter valid input from the menu!!\n\n";
+            cin.ignore();
+        }
+    }
+}
 //_________________________________________
 void loadImage() {
     char imageFileName[100];
@@ -82,34 +118,11 @@ void BW() {
         }
     }
 }
-
-
-void menuDisplay() {
-
-    cout << "Please select a filter to apply or 0 to exit: \nNote: The Answer Is Only One Char 'The App Will Take Only First Char'\n";
-    while (true) {
-        cout << "\t1- Black & White Filter" << endl;
-        cout << "\t2- Invert Filter" << endl;
-        cout << "\t3- Merge Filter" << endl;
-        cout << "\t4- Flip Image" << endl;
-        cout << "\t5- Darken and Lighten Image" << endl;
-        cout << "\t6- Rotate Image" << endl;
-        cout << "\t7- Detect Image Edges" << endl;
-        cout << "\t8- Enlarge Image" << endl;
-        cout << "\t9- Shrink Image" << endl;
-        cout << "\ta- Mirror 1/2 Image" << endl;
-        cout << "\tb- Shuffle Image" << endl;
-        cout << "\tc- Blur Image" << endl;
-        cout << "\ts- save the image to file" << endl;
-        cout << "\t0- Exit" << endl;
-        cout << "-->";
-
-        cin >> userInput;
-        if ((userInput >= 48 && userInput <= 57) || (userInput == 97 || userInput == 98 || userInput == 99 || userInput == 115))
-            break;
-        else {
-            cout << "Please enter valid input from the menu!!\n\n";
-            cin.ignore();
+//_________________________________________
+void invertFilter(){
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = 255 - image[i][j];
         }
     }
 }
