@@ -25,8 +25,12 @@ void BW();
 void invertFilter();
 void mergeImage();
 void flipImage();
+<<<<<<< HEAD
 void rotate();
 
+=======
+void darkenAndLightenImage();
+>>>>>>> master
 int main()
 {
     cout << "Ahlan ya user ya habibi\n";
@@ -49,9 +53,14 @@ int main()
     case 52:
         flipImage();
         break;
+<<<<<<< HEAD
     case 54:
         rotate();
         break;
+=======
+    case 53:
+        darkenAndLightenImage();
+>>>>>>> master
     default:
         break;
     }
@@ -94,7 +103,6 @@ void loadImage() {
     char imageFileName[100];
 
     // Get gray scale image file name
-    cout << "Ahlan ya user ya habibi";
     cout << "Please enter file name of the image to process: ";
     cin >> imageFileName;
 
@@ -172,6 +180,48 @@ void flipImage(){
     } 
 }
 
+
+//_________________________________________
+void darkenAndLightenImage(){
+    int chooses;
+    cout<<"Please Choose;"<<endl;
+    while (true){
+        cout<<"\t1- Light"<<endl;
+        cout<<"\t2- Dark"<<endl;
+        cout<<"-->";
+        cin>>chooses;
+
+        if (chooses == 1 || chooses==2)
+            break;
+        else{
+            cout<<"Please choose valid input\n";
+            cin.ignore();
+        }
+    }
+    if (chooses == 1 ){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                    // if (image[i][j]  + 0.5*image[i][j] > 255 || image[i][j]  + 0.5*image[i][j] == 255 )
+                        // image[i][j] = 255;
+                    // else
+                        // image[i][j] += 0.5*image[i][j];
+                    if (image[i][j]<127)
+                        image[i][j] += 127;
+                    else
+                        image[i][j] =255;
+            }
+        }
+    }else{
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                    image[i][j] -=  0.5*(image[i][j]);
+            }
+        }
+    }
+
+}
+
+//_________________________________________
 void rotate(){
     int rot;
     cout << "Enter the degree from (90, 180, 270) to rotate: ";
@@ -207,4 +257,4 @@ void rotate(){
             }
         }
     }
-}
+} 
