@@ -112,4 +112,5 @@ void menuDisplay() {
             cin.ignore();
         }
     }
+    cout << "fuck world";
 }
