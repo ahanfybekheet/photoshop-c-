@@ -130,6 +130,7 @@ void BW() {
         }
     }
 }
+
 //_________________________________________
 void invertFilter(){
     for (int i = 0; i < SIZE; i++) {
@@ -203,4 +204,5 @@ void darkenAndLightenImage(){
             }
         }
     }
+
 }
