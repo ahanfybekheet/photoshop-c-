@@ -54,10 +54,10 @@ int main()
         flipImage();
         break;
     case 53:
-        darkenAndLightenImage();
+        rotate();
         break;
     case 54:
-        rotate();
+        darkenAndLightenImage();
         break;
     case 56:
         enlarge();
@@ -78,8 +78,8 @@ void menuDisplay() {
         cout << "\t2- Invert Filter" << endl;
         cout << "\t3- Merge Filter" << endl;
         cout << "\t4- Flip Image" << endl;
-        cout << "\t5- Darken and Lighten Image" << endl;
-        cout << "\t6- Rotate Image" << endl;
+        cout << "\t5- Rotate Image" << endl;
+        cout << "\t6- Darken and Lighten Image" << endl;
         cout << "\t7- Detect Image Edges" << endl;
         cout << "\t8- Enlarge Image" << endl;
         cout << "\t9- Shrink Image" << endl;
@@ -122,7 +122,7 @@ void saveImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    if (userInput == '4' || userInput == '6' || userInput == '8' ){
+    if (userInput == '4' || userInput == '5' || userInput == '8' ){
         writeGSBMP(imageFileName, image2);
     }
     else {
