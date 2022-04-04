@@ -15,7 +15,7 @@
 using namespace std;
 unsigned char image[SIZE][SIZE];
 unsigned char image2[SIZE][SIZE];
-unsigned char quarterImage[SIZE][SIZE];
+
 char userInput;
 
 
@@ -32,6 +32,7 @@ void darkenAndLightenImage();
 void enlargeImage();
 void shrinkImage();
 void shuffleImage();
+
 
 
 
@@ -57,14 +58,14 @@ int main()
     case 52:
         flipImage();
         break;
-    case 54:
+    case 53:
         rotate();
         break;
-    case 53:
+    case 54:
         darkenAndLightenImage();
         break;
     case 56:
-        enlargeImage();
+        enlarge();
         break;
     case 57:
         shrinkImage();
@@ -132,14 +133,13 @@ void saveImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    if (userInput == '4' || userInput == '5' || userInput == '8' || userInput == '9' || userInput == 'b')
+    if (userInput == '4' || userInput == '5' || userInput == '8' || userInput == '9' || userInput == 'b'){
         writeGSBMP(imageFileName, image2);
+    }
     else {
         writeGSBMP(imageFileName, image);
     }
 }
-
-
 //_________________________________________
 void BW() {
     for (int i = 0; i < SIZE; i++) {
@@ -154,7 +154,6 @@ void BW() {
         }
     }
 }
-
 //_________________________________________
 void invertFilter(){
     for (int i = 0; i < SIZE; i++) {
@@ -185,11 +184,34 @@ void mergeImage(){
 }
 //_________________________________________
 void flipImage(){
-    for (int i =0 ;i <255 ;i++){
-        for (int j =0 ;j <255 ;j++){
-            image2[i][j] = image [225-i][j];
+    int choose;
+    while (true)
+    {
+        cout << "Flip (1) for horizontally or (2) for vertically: ";
+        cin >> choose;
+        if (choose == 1 || choose == 2){
+            break;
         }
-    } 
+        else {
+            cout << "Invalid input.";
+            cin.ignore();
+        }
+    }
+    if (choose == 1){
+        for (int i =0 ;i <255 ;i++){
+            for (int j =255 ;j > 0 ;j--){
+                image2[i][255 - j] = image [i][j];
+                
+            }
+        } 
+    }
+    else {
+        for (int i =0 ;i <255 ;i++){
+            for (int j =0 ;j <255 ;j++){
+                image2[i][j] = image [255-i][j];
+            }
+        } 
+    }
 }
 //_________________________________________
 void darkenAndLightenImage(){
@@ -211,6 +233,10 @@ void darkenAndLightenImage(){
     if (chooses == 1 ){
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
+                    // if (image[i][j]  + 0.5*image[i][j] > 255 || image[i][j]  + 0.5*image[i][j] == 255 )
+                        // image[i][j] = 255;
+                    // else
+                        // image[i][j] += 0.5*image[i][j];
                     if (image[i][j]<127)
                         image[i][j] += 127;
                     else
@@ -226,7 +252,6 @@ void darkenAndLightenImage(){
     }
 
 }
-
 //_________________________________________
 void rotate(){
     int rot;
@@ -237,7 +262,7 @@ void rotate(){
         if (rot == 90 || rot == 180 || rot == 270)
             break;
         else{
-            cout<<"Please choose valid input\n";
+            cout<<"Please enter valid number\n";
             cin.ignore();
         }
     }
@@ -272,7 +297,7 @@ void rotate(){
             }
         }
     }
-} 
+}
 //_________________________________________
 void enlargeImage(){
     int quarter;
@@ -484,3 +509,4 @@ void shrinkImage(){
 //     }
 
 // }
+
