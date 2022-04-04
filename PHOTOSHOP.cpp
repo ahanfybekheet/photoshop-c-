@@ -269,7 +269,7 @@ void rotate(){
     if (rot == 90){
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j <= SIZE - i; j++) {
-                swap(image[i][j], image[SIZE - j][SIZE - i]);
+                swap(image[i][j], image[SIZE - j - 1][SIZE - i]);
             }
         }
         for (int i = 0; i < SIZE; i++) {
@@ -288,7 +288,7 @@ void rotate(){
     else if (rot == 270){
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j <= SIZE - i; j++) {
-                swap(image[i][j], image[SIZE - j][SIZE - i]);
+                swap(image[i][j], image[SIZE - j - 1][SIZE - i]);
             }
         }
         for (int i = 0; i < SIZE; i++) {
