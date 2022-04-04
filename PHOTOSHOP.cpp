@@ -32,6 +32,8 @@ void enlargeImage();
 void shrinkImage();
 void shuffleImage();
 
+
+
 int main()
 {
     cout << "Ahlan ya user ya habibi\n";
@@ -89,8 +91,8 @@ void menuDisplay() {
         cout << "\t2- Invert Filter" << endl;
         cout << "\t3- Merge Filter" << endl;
         cout << "\t4- Flip Image" << endl;
-        cout << "\t5- Darken and Lighten Image" << endl;
-        cout << "\t6- Rotate Image" << endl;
+        cout << "\t5- Rotate Image" << endl;
+        cout << "\t6- Darken and Lighten Image" << endl;
         cout << "\t7- Detect Image Edges" << endl;
         cout << "\t8- Enlarge Image" << endl;
         cout << "\t9- Shrink Image" << endl;
@@ -133,7 +135,7 @@ void saveImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    if (userInput == '4' || userInput == '6' || userInput == '8' || userInput == '9' || userInput == 'b')
+    if (userInput == '4' || userInput == '5' || userInput == '8' || userInput == '9' || userInput == 'b')
         writeGSBMP(imageFileName, image2);
     else {
         writeGSBMP(imageFileName, image);
@@ -191,8 +193,6 @@ void flipImage(){
         }
     } 
 }
-
-
 //_________________________________________
 void darkenAndLightenImage(){
     int chooses;
@@ -232,10 +232,10 @@ void darkenAndLightenImage(){
 //_________________________________________
 void rotate(){
     int rot;
+
     while (true){
         cout << "Enter the degree from (90, 180, 270) to rotate: ";
         cin>>rot;
-
         if (rot == 90 || rot == 180 || rot == 270)
             break;
         else{
