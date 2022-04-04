@@ -19,6 +19,7 @@ unsigned char quarterImage[SIZE][SIZE];
 char userInput;
 
 
+
 void menuDisplay();
 void loadImage();
 void saveImage();
@@ -137,6 +138,7 @@ void saveImage() {
         writeGSBMP(imageFileName, image);
     }
 }
+
 
 //_________________________________________
 void BW() {
