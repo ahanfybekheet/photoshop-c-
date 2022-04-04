@@ -59,22 +59,18 @@ int main()
     case 54:
         rotate();
         break;
-
     case 53:
         darkenAndLightenImage();
         break;
-
     case 56:
         enlargeImage();
         break;
-
     case 57:
         shrinkImage();
         break;
     case 98:
         //shuffleImage();
-        break;
-        
+        break;  
     default:
         break;
     }
