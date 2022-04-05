@@ -15,7 +15,7 @@
 using namespace std;
 unsigned char image[SIZE][SIZE];
 unsigned char image2[SIZE][SIZE];
-
+unsigned char quarterImage[SIZE][SIZE];
 char userInput;
 
 
@@ -65,7 +65,7 @@ int main()
         darkenAndLightenImage();
         break;
     case 56:
-        enlarge();
+        enlargeImage();
         break;
     case 57:
         shrinkImage();
@@ -233,14 +233,10 @@ void darkenAndLightenImage(){
     if (chooses == 1 ){
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                    // if (image[i][j]  + 0.5*image[i][j] > 255 || image[i][j]  + 0.5*image[i][j] == 255 )
-                        // image[i][j] = 255;
-                    // else
-                        // image[i][j] += 0.5*image[i][j];
                     if (image[i][j]<127)
                         image[i][j] += 127;
                     else
-                        image[i][j] =255;
+                        image[i][j] = 255;
             }
         }
     }else{
@@ -274,7 +270,7 @@ void rotate(){
         }
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                image2[i][j] = image[255-i][j];
+                image2[i][j] = image[255 - i][j];
             }
         }
     }
@@ -288,7 +284,7 @@ void rotate(){
     else if (rot == 270){
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j <= SIZE - i; j++) {
-                swap(image[i][j], image[SIZE - j][SIZE - i]);
+                swap(image[i][j], image[SIZE - j - 1][SIZE - i]);
             }
         }
         for (int i = 0; i < SIZE; i++) {
