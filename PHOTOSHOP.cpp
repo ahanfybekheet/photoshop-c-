@@ -29,10 +29,12 @@ void mergeImage();
 void flipImage();
 void rotate();
 void darkenAndLightenImage();
+void detect_edge();
 void enlargeImage();
 void shrinkImage();
+void mirror();
 void shuffleImage();
-
+void blur();
 
 
 
@@ -67,12 +69,22 @@ int main()
     case 56:
         enlargeImage();
         break;
+    case 55:
+        BW();
+        detect_edge();
+        break;
     case 57:
         shrinkImage();
         break;
+    case 'a':
+        mirror();
+        break;
     case 98:
         //shuffleImage();
-        break;  
+        break;
+    case 'c':
+        blur();
+        break;
     default:
         break;
     }
@@ -214,41 +226,6 @@ void flipImage(){
     }
 }
 //_________________________________________
-void darkenAndLightenImage(){
-    int chooses;
-    cout<<"Please Choose;"<<endl;
-    while (true){
-        cout<<"\t1- Light"<<endl;
-        cout<<"\t2- Dark"<<endl;
-        cout<<"--> ";
-        cin>>chooses;
-
-        if (chooses == 1 || chooses==2)
-            break;
-        else{
-            cout<<"Please choose valid input\n";
-            cin.ignore();
-        }
-    }
-    if (chooses == 1 ){
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                    if (image[i][j]<127)
-                        image[i][j] += 127;
-                    else
-                        image[i][j] = 255;
-            }
-        }
-    }else{
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                    image[i][j] -=  0.5*(image[i][j]);
-            }
-        }
-    }
-
-}
-//_________________________________________
 void rotate(){
     int rot;
 
@@ -293,6 +270,41 @@ void rotate(){
             }
         }
     }
+}
+//_________________________________________
+void darkenAndLightenImage(){
+    int chooses;
+    cout<<"Please Choose;"<<endl;
+    while (true){
+        cout<<"\t1- Light"<<endl;
+        cout<<"\t2- Dark"<<endl;
+        cout<<"--> ";
+        cin>>chooses;
+
+        if (chooses == 1 || chooses==2)
+            break;
+        else{
+            cout<<"Please choose valid input\n";
+            cin.ignore();
+        }
+    }
+    if (chooses == 1 ){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                    if (image[i][j]<127)
+                        image[i][j] += 127;
+                    else
+                        image[i][j] = 255;
+            }
+        }
+    }else{
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                    image[i][j] -=  0.5*(image[i][j]);
+            }
+        }
+    }
+
 }
 //_________________________________________
 void enlargeImage(){
@@ -399,7 +411,6 @@ void enlargeImage(){
                 image2[i][j+1] = quarterImage[row][col];
                 image2[i+1][j] = quarterImage[row][col];
                 image2[i+1][j+1] = quarterImage[row][col];
-                
                 col++;
             }
             col = 127;
@@ -407,6 +418,19 @@ void enlargeImage(){
         }
         
     }
+}
+//_________________________________________
+void detect_edge() {
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        if(image[i][j]==image[i][j+1]&&image[i][j]==image[i+1][j]&&image[i][j]==image[i+1][j+1]){
+            image[i][j]=255;
+        }
+        else{
+            image[i][j]=0;
+        }
+    }
+  }
 }
 //_________________________________________
 void shrinkImage(){
@@ -454,7 +478,66 @@ void shrinkImage(){
         }
     }
 }
+//_________________________________________
+void mirror(){
+    int side,x=0;
+    while (true){
+        cout << "Please, Enter the number of the side\n\t1- Left\n\t2- Right\n\t3- Upper\n\t4- Lower\n";
+        cout << "--> ";
+        cin >> side;
+        if (side == 1 || side == 2 || side == 3 || side == 4 )
+            break;
+        else{
+            cout<<"Please, Enter Int from 1 to 4!!..\n\n";
+            cin.ignore();
+        }
+    }
+    if (side == 1){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
 
+                if(j>(SIZE/2)){
+                    image[i][j]=image[i][(SIZE/2)-x];
+                    x++;
+                }
+
+            }
+            x=0;
+        }
+    }
+    else if (side == 2){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
+                if(j<(SIZE/2)){
+                    image[i][j]=image[i][SIZE-x];
+                    x++;
+                }
+
+            }
+            x=0;
+        }
+    }
+    else if (side == 3){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
+                if(i>(SIZE/2)){
+                    image[i][j]=image[SIZE-i][j];
+                }
+            }
+        }
+    }
+    else if (side == 4){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
+                if(i<(SIZE/2)){
+                    image[i][j]=image[SIZE-x][j];
+                }
+            }
+            x++;
+        }
+    }
+}
+// //_________________________________________
 // void shuffleImage(){
 //     unsigned char quarterImage[SIZE][SIZE];
 //     unsigned char quarterImage2[SIZE][SIZE];
@@ -505,4 +588,13 @@ void shrinkImage(){
 //     }
 
 // }
-
+//_________________________________________
+void blur() {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j< SIZE; j++) {
+            if(i>=1&&j<SIZE&&i<SIZE&&j>=1){
+                image[i][j]= (image[i-1][j-1]+image[i][j-1]+image[i+1][j-1]+image[i-1][j]+image[i][j]+image[i+1][j]+image[i-1][j+1]+image[i][j+1]+image[i+1][j+1])/9;
+            }
+        }
+    }
+}
