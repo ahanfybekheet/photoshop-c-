@@ -29,10 +29,12 @@ void mergeImage();
 void flipImage();
 void rotate();
 void darkenAndLightenImage();
+void detect_edge();
 void enlargeImage();
 void shrinkImage();
+void mirror();
 void shuffleImage();
-
+void blur();
 
 
 
@@ -67,12 +69,22 @@ int main()
     case 56:
         enlargeImage();
         break;
+    case 55:
+        BW();
+        detect_edge();
+        break;
     case 57:
         shrinkImage();
         break;
-    // case 98:
-    //     //shuffleImage();
-    //     break;  
+    case 'a':
+        mirror();
+        break;
+    case 98:
+        //shuffleImage();
+        break;
+    case 'c':
+        blur();
+        break;
     default:
         break;
     }
@@ -82,7 +94,6 @@ int main()
 
 //_________________________________________
 void menuDisplay() {
-
     cout << "Please select a filter to apply or 0 to exit: \nNote: The Answer Is Only One Char 'The App Will Take Only First Char'\n";
     while (true) {
         cout << "\t1- Black & White Filter" << endl;
@@ -228,46 +239,6 @@ void flipImage(){
     }
 }
 //_________________________________________
-void darkenAndLightenImage(){
-    int chooses;
-    cout<<"Please Choose;"<<endl;
-    while (true){
-        cout<<"\t1- Light"<<endl;
-        cout<<"\t2- Dark"<<endl;
-        cout<<"--> ";
-        cin>>chooses;
-
-        if (chooses == 1 || chooses==2)
-            break;
-        else{
-            cout<<"Please choose valid input\n";
-            cin.ignore();
-        }
-    }
-    if (chooses == 1 ){
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                for (int k =0 ; k<RGB;k++){
-                    if (image[i][j][k]<127)
-                        image[i][j][k] += 127;
-                    else{
-                        image[i][j][k] = 255;
-                    }
-                }
-            }
-        }
-    }else{
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                for (int k=0;k<RGB;k++){
-                    image[i][j][k] -=  0.5*(image[i][j][k]);
-                }
-            }
-        }
-    }
-
-}
-//_________________________________________
 void rotate(){
     int rot;
 
@@ -319,6 +290,61 @@ void rotate(){
             for (int j = 0; j < SIZE; j++) {
                 for (int k=0 ;k<RGB;k++){
                     image2[i][j][k] = image[i][255-j][k];
+                }
+            }
+        }
+    }
+}
+//_________________________________________
+void darkenAndLightenImage(){
+    int chooses;
+    cout<<"Please Choose;"<<endl;
+    while (true){
+        cout<<"\t1- Light"<<endl;
+        cout<<"\t2- Dark"<<endl;
+        cout<<"--> ";
+        cin>>chooses;
+
+        if (chooses == 1 || chooses==2)
+            break;
+        else{
+            cout<<"Please choose valid input\n";
+            cin.ignore();
+        }
+    }
+    if (chooses == 1 ){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                for (int k =0 ; k<RGB;k++){
+                    if (image[i][j][k]<127)
+                        image[i][j][k] += 127;
+                    else{
+                        image[i][j][k] = 255;
+                    }
+                }
+            }
+        }
+    }else{
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                for (int k=0;k<RGB;k++){
+                    image[i][j][k] -=  0.5*(image[i][j][k]);
+                }
+            }
+        }
+    }
+
+}
+//_________________________________________
+void detect_edge() {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j< SIZE; j++) {
+            for (int k=0 ;k<RGB;k++){
+                if(image[i][j][k]==image[i][j+1][k]&&image[i][j][k]==image[i+1][j][k]&&image[i][j][k]==image[i+1][j+1][k]){
+                    image[i][j][k]=255;
+                }
+                else{
+                    image[i][j][k]=0;
                 }
             }
         }
@@ -505,6 +531,72 @@ void shrinkImage(){
         }
     }
 }
+//_________________________________________
+void mirror(){
+    int side,x=0;
+    while (true){
+        cout << "Please, Enter the number of the side\n\t1- Left\n\t2- Right\n\t3- Upper\n\t4- Lower\n";
+        cout << "--> ";
+        cin >> side;
+        if (side == 1 || side == 2 || side == 3 || side == 4 )
+            break;
+        else{
+            cout<<"Please, Enter Int from 1 to 4!!..\n\n";
+            cin.ignore();
+        }
+    }
+    if (side == 1){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
+                for (int k=0 ;k<RGB;k++){
+                    if(j>(SIZE/2)){
+                        image[i][j][k]=image[i][(SIZE/2)-x][k];
+                        x++;
+                    }
+                }
+                x-=3;
+            }
+            x=0;
+        }
+    }
+    else if (side == 2){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
+                for (int k=0 ;k<RGB;k++){
+                    if(j<(SIZE/2)){
+                        image[i][j][k]=image[i][SIZE-x][k];
+                        x++;
+                    }
+                }
+
+            }
+            x=0;
+        }
+    }
+    else if (side == 3){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
+                for (int k=0 ;k<RGB;k++){
+                    if(i>(SIZE/2)){
+                        image[i][j][k]=image[SIZE-i][j][k];
+                    }
+                }
+            }
+        }
+    }
+    else if (side == 4){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
+                for (int k=0 ;k<RGB;k++){
+                    if(i<(SIZE/2)){
+                        image[i][j][k]=image[SIZE-x][j][k];
+                    }
+                }
+            }
+            x++;
+        }
+    }
+}
 // //_________________________________________
 // void shuffleImage(){
 //     unsigned char quarterImage[SIZE][SIZE];
@@ -556,4 +648,15 @@ void shrinkImage(){
 //     }
 
 // }
-
+//_________________________________________
+void blur() {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j< SIZE; j++) {
+            for (int k=0 ;k<RGB;k++){
+                if(i>=1&&j<SIZE&&i<SIZE&&j>=1){
+                    image[i][j][k]= (image[i-1][j-1][k]+image[i][j-1][k]+image[i+1][j-1][k]+image[i-1][j][k]+image[i][j][k]+image[i+1][j][k]+image[i-1][j+1][k]+image[i][j+1][k]+image[i+1][j+1][k])/9;
+                }
+            }
+        }
+    }
+}
