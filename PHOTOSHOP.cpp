@@ -13,9 +13,9 @@
 #include "bmplib.cpp"
 
 using namespace std;
-unsigned char image[SIZE][SIZE];
+unsigned char image[SIZE][SIZE][RGB];
 unsigned char image2[SIZE][SIZE];
-
+unsigned char quarterImage[SIZE][SIZE];
 char userInput;
 
 
@@ -52,27 +52,27 @@ int main()
     case 50:
         invertFilter();
         break;
-    case 51:
-        mergeImage();
-        break;
-    case 52:
-        flipImage();
-        break;
-    case 53:
-        rotate();
-        break;
-    case 54:
-        darkenAndLightenImage();
-        break;
-    case 56:
-        enlarge();
-        break;
-    case 57:
-        shrinkImage();
-        break;
-    case 98:
-        //shuffleImage();
-        break;  
+    // case 51:
+    //     mergeImage();
+    //     break;
+    // case 52:
+    //     flipImage();
+    //     break;
+    // case 53:
+    //     rotate();
+    //     break;
+    // case 54:
+    //     darkenAndLightenImage();
+    //     break;
+    // case 56:
+    //     enlargeImage();
+    //     break;
+    // case 57:
+    //     shrinkImage();
+    //     break;
+    // case 98:
+    //     //shuffleImage();
+    //     break;  
     default:
         break;
     }
@@ -120,7 +120,7 @@ void loadImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    readGSBMP(imageFileName, image);
+    readRGBBMP(imageFileName, image);
 }
 
 //_________________________________________
@@ -133,331 +133,337 @@ void saveImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    if (userInput == '4' || userInput == '5' || userInput == '8' || userInput == '9' || userInput == 'b'){
-        writeGSBMP(imageFileName, image2);
-    }
-    else {
-        writeGSBMP(imageFileName, image);
-    }
+    // if (userInput == '4' || userInput == '5' || userInput == '8' || userInput == '9' || userInput == 'b'){
+    //     writeRGBBMP(imageFileName, image2);
+    // }
+    // else {
+        writeRGBBMP(imageFileName, image);
+    // }
 }
 //_________________________________________
 void BW() {
+
+    
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            if (image[i][j] > 127) {
-                image[i][j] = 255;
+            if (image[i][j][0] + image[i][j][1] + image [i][j][2] < 384) {
+                image[i][j][0] = 0;
+                image[i][j][1] = 0;
+                image[i][j][2] = 0;
             }
             else {
-                image[i][j] = 0;
+                image[i][j][0] = 255;
+                image[i][j][1] = 255;
+                image[i][j][2] = 255;
             }
+            
 
         }
     }
+    
 }
 //_________________________________________
 void invertFilter(){
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            image[i][j] = 255 - image[i][j];
+            for(int k =0 ;k<RGB;k++){
+                image[i][j][k] = 255 - image[i][j][k];
+            }
         }
     }
 }
-//_________________________________________
-void mergeImage(){
-    //Load seconde Image
-    char mergedImageFileName[100];
+// //_________________________________________
+// void mergeImage(){
+//     //Load seconde Image
+//     char mergedImageFileName[100];
 
-    // Get the seconde photo that want to be merged
-    cout << "Please enter file name of the image to merge: ";
-    cin >> mergedImageFileName;
+//     // Get the seconde photo that want to be merged
+//     cout << "Please enter file name of the image to merge: ";
+//     cin >> mergedImageFileName;
 
-    // Add to it .bmp extension and load image
-    strcat(mergedImageFileName, ".bmp");
-    readGSBMP(mergedImageFileName, image2);
-
-    //Merge Two Photos
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-                image[i][j] = image[i][j] + (image2[i][j]/2);
-        }
-    }
-}
-//_________________________________________
-void flipImage(){
-    int choose;
-    while (true)
-    {
-        cout << "Flip (1) for horizontally or (2) for vertically: ";
-        cin >> choose;
-        if (choose == 1 || choose == 2){
-            break;
-        }
-        else {
-            cout << "Invalid input.";
-            cin.ignore();
-        }
-    }
-    if (choose == 1){
-        for (int i =0 ;i <255 ;i++){
-            for (int j =255 ;j > 0 ;j--){
-                image2[i][255 - j] = image [i][j];
+//     // Add to it .bmp extension and load image
+//     strcat(mergedImageFileName, ".bmp");
+//     readGSBMP(mergedImageFileName, image2);
+    
+//     //Merge Two Photos
+//     for (int i = 0; i < SIZE; i++) {
+//         for (int j = 0; j < SIZE; j++) {
+//                 image[i][j] = (image[i][j]/2) + (image2[i][j]/2);
+//         }
+//     }
+// }
+// //_________________________________________
+// void flipImage(){
+//     int choose;
+//     while (true)
+//     {
+//         cout << "Flip (1) for horizontally or (2) for vertically: ";
+//         cin >> choose;
+//         if (choose == 1 || choose == 2){
+//             break;
+//         }
+//         else {
+//             cout << "Invalid input.";
+//             cin.ignore();
+//         }
+//     }
+//     if (choose == 1){
+//         for (int i =0 ;i <255 ;i++){
+//             for (int j =255 ;j > 0 ;j--){
+//                 image2[i][255 - j] = image [i][j];
                 
-            }
-        } 
-    }
-    else {
-        for (int i =0 ;i <255 ;i++){
-            for (int j =0 ;j <255 ;j++){
-                image2[i][j] = image [255-i][j];
-            }
-        } 
-    }
-}
-//_________________________________________
-void darkenAndLightenImage(){
-    int chooses;
-    cout<<"Please Choose;"<<endl;
-    while (true){
-        cout<<"\t1- Light"<<endl;
-        cout<<"\t2- Dark"<<endl;
-        cout<<"--> ";
-        cin>>chooses;
+//             }
+//         } 
+//     }
+//     else {
+//         for (int i =0 ;i <255 ;i++){
+//             for (int j =0 ;j <255 ;j++){
+//                 image2[i][j] = image [255-i][j];
+//             }
+//         } 
+//     }
+// }
+// //_________________________________________
+// void darkenAndLightenImage(){
+//     int chooses;
+//     cout<<"Please Choose;"<<endl;
+//     while (true){
+//         cout<<"\t1- Light"<<endl;
+//         cout<<"\t2- Dark"<<endl;
+//         cout<<"--> ";
+//         cin>>chooses;
 
-        if (chooses == 1 || chooses==2)
-            break;
-        else{
-            cout<<"Please choose valid input\n";
-            cin.ignore();
-        }
-    }
-    if (chooses == 1 ){
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                    // if (image[i][j]  + 0.5*image[i][j] > 255 || image[i][j]  + 0.5*image[i][j] == 255 )
-                        // image[i][j] = 255;
-                    // else
-                        // image[i][j] += 0.5*image[i][j];
-                    if (image[i][j]<127)
-                        image[i][j] += 127;
-                    else
-                        image[i][j] =255;
-            }
-        }
-    }else{
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                    image[i][j] -=  0.5*(image[i][j]);
-            }
-        }
-    }
+//         if (chooses == 1 || chooses==2)
+//             break;
+//         else{
+//             cout<<"Please choose valid input\n";
+//             cin.ignore();
+//         }
+//     }
+//     if (chooses == 1 ){
+//         for (int i = 0; i < SIZE; i++) {
+//             for (int j = 0; j < SIZE; j++) {
+//                     if (image[i][j]<127)
+//                         image[i][j] += 127;
+//                     else
+//                         image[i][j] = 255;
+//             }
+//         }
+//     }else{
+//         for (int i = 0; i < SIZE; i++) {
+//             for (int j = 0; j < SIZE; j++) {
+//                     image[i][j] -=  0.5*(image[i][j]);
+//             }
+//         }
+//     }
 
-}
-//_________________________________________
-void rotate(){
-    int rot;
+// }
+// //_________________________________________
+// void rotate(){
+//     int rot;
 
-    while (true){
-        cout << "Enter the degree from (90, 180, 270) to rotate: ";
-        cin>>rot;
-        if (rot == 90 || rot == 180 || rot == 270)
-            break;
-        else{
-            cout<<"Please enter valid number\n";
-            cin.ignore();
-        }
-    }
-    if (rot == 90){
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j <= SIZE - i; j++) {
-                swap(image[i][j], image[SIZE - j][SIZE - i]);
-            }
-        }
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                image2[i][j] = image[255-i][j];
-            }
-        }
-    }
-    else if (rot == 180){
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                image2[i][j] = image[255-i][255-j];
-            }
-        }
-    }
-    else if (rot == 270){
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j <= SIZE - i; j++) {
-                swap(image[i][j], image[SIZE - j][SIZE - i]);
-            }
-        }
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                image2[i][j] = image[i][255-j];
-            }
-        }
-    }
-}
-//_________________________________________
-void enlargeImage(){
-    int quarter;
-    int row = 0 , col = 0;
-    while (true){
-        cout << "Please, Enter the number of quarter"<<endl;
-        cout << "--> ";
-        cin >> quarter;
-        if (quarter == 1 || quarter == 2 || quarter == 3 || quarter == 4)
-            break;
-        else{
-            cout<<"Please, Enter Int from 1 to 4!!..\n\n";
-            cin.ignore();
-        }
-    }
-    // Create quarterImage 
-    if (quarter == 1){
-        for (int i = 0; i < 127; i ++){
-            for (int j = 0; j < 127; j ++){
-                quarterImage[i][j] = image[i][j];
-            }
-        }
-    }
-    if (quarter == 2){
-        for (int i = 0; i < 127; i ++){
-            for (int j = 127; j < 255; j ++){
-                quarterImage[i][j] = image[i][j];
-            }
-        }
-    }
-    if (quarter == 3){
-        for (int i = 127; i < 255; i ++){
-            for (int j = 0; j < 127; j ++){
-                quarterImage[i][j] = image[i][j];
-            }
-        }
-    }
-    if (quarter == 4){
-        for (int i = 127; i < 255; i ++){
-            for (int j = 127; j < 255; j ++){
-                quarterImage[i][j] = image[i][j];
-            }
-        }
-    }
-    //End of creation
-    if(quarter ==1){
-        row=0;
-        col=0;
-        for (int i = 0; i < SIZE; i+=2) {
-            for (int j = 0; j < SIZE; j += 2) {
-                image2[i][j] = quarterImage[row][col];
-                image2[i][j+1] = quarterImage[row][col];
-                image2[i+1][j] = quarterImage[row][col];
-                image2[i+1][j+1] = quarterImage[row][col];
+//     while (true){
+//         cout << "Enter the degree from (90, 180, 270) to rotate: ";
+//         cin>>rot;
+//         if (rot == 90 || rot == 180 || rot == 270)
+//             break;
+//         else{
+//             cout<<"Please enter valid number\n";
+//             cin.ignore();
+//         }
+//     }
+//     if (rot == 90){
+//         for (int i = 0; i < SIZE; i++) {
+//             for (int j = 0; j <= SIZE - i; j++) {
+//                 swap(image[i][j], image[SIZE - j][SIZE - i]);
+//             }
+//         }
+//         for (int i = 0; i < SIZE; i++) {
+//             for (int j = 0; j < SIZE; j++) {
+//                 image2[i][j] = image[255 - i][j];
+//             }
+//         }
+//     }
+//     else if (rot == 180){
+//         for (int i = 0; i < SIZE; i++) {
+//             for (int j = 0; j < SIZE; j++) {
+//                 image2[i][j] = image[255-i][255-j];
+//             }
+//         }
+//     }
+//     else if (rot == 270){
+//         for (int i = 0; i < SIZE; i++) {
+//             for (int j = 0; j <= SIZE - i; j++) {
+//                 swap(image[i][j], image[SIZE - j - 1][SIZE - i]);
+//             }
+//         }
+//         for (int i = 0; i < SIZE; i++) {
+//             for (int j = 0; j < SIZE; j++) {
+//                 image2[i][j] = image[i][255-j];
+//             }
+//         }
+//     }
+// }
+// //_________________________________________
+// void enlargeImage(){
+//     int quarter;
+//     int row = 0 , col = 0;
+//     while (true){
+//         cout << "Please, Enter the number of quarter"<<endl;
+//         cout << "--> ";
+//         cin >> quarter;
+//         if (quarter == 1 || quarter == 2 || quarter == 3 || quarter == 4)
+//             break;
+//         else{
+//             cout<<"Please, Enter Int from 1 to 4!!..\n\n";
+//             cin.ignore();
+//         }
+//     }
+//     // Create quarterImage 
+//     if (quarter == 1){
+//         for (int i = 0; i < 127; i ++){
+//             for (int j = 0; j < 127; j ++){
+//                 quarterImage[i][j] = image[i][j];
+//             }
+//         }
+//     }
+//     if (quarter == 2){
+//         for (int i = 0; i < 127; i ++){
+//             for (int j = 127; j < 255; j ++){
+//                 quarterImage[i][j] = image[i][j];
+//             }
+//         }
+//     }
+//     if (quarter == 3){
+//         for (int i = 127; i < 255; i ++){
+//             for (int j = 0; j < 127; j ++){
+//                 quarterImage[i][j] = image[i][j];
+//             }
+//         }
+//     }
+//     if (quarter == 4){
+//         for (int i = 127; i < 255; i ++){
+//             for (int j = 127; j < 255; j ++){
+//                 quarterImage[i][j] = image[i][j];
+//             }
+//         }
+//     }
+//     //End of creation
+//     if(quarter ==1){
+//         row=0;
+//         col=0;
+//         for (int i = 0; i < SIZE; i+=2) {
+//             for (int j = 0; j < SIZE; j += 2) {
+//                 image2[i][j] = quarterImage[row][col];
+//                 image2[i][j+1] = quarterImage[row][col];
+//                 image2[i+1][j] = quarterImage[row][col];
+//                 image2[i+1][j+1] = quarterImage[row][col];
                 
-                col++;
-            }
-            col = 0;
-            row++;
-        }
+//                 col++;
+//             }
+//             col = 0;
+//             row++;
+//         }
         
-    }
-    if(quarter ==2){
-        row=0;
-        col=127;
-        for (int i = 0; i < SIZE; i+=2) {
-            for (int j = 0; j < SIZE; j += 2) {
-                image2[i][j] = quarterImage[row][col];
-                image2[i][j+1] = quarterImage[row][col];
-                image2[i+1][j] = quarterImage[row][col];
-                image2[i+1][j+1] = quarterImage[row][col];
+//     }
+//     if(quarter ==2){
+//         row=0;
+//         col=127;
+//         for (int i = 0; i < SIZE; i+=2) {
+//             for (int j = 0; j < SIZE; j += 2) {
+//                 image2[i][j] = quarterImage[row][col];
+//                 image2[i][j+1] = quarterImage[row][col];
+//                 image2[i+1][j] = quarterImage[row][col];
+//                 image2[i+1][j+1] = quarterImage[row][col];
                 
-                col++;
-            }
-            col = 127;
-            row++;
-        }
+//                 col++;
+//             }
+//             col = 127;
+//             row++;
+//         }
         
-    }
-    if(quarter ==3){
-        row=127;
-        col=0;
-        for (int i = 0; i < SIZE; i+=2) {
-            for (int j = 0; j < SIZE; j += 2) {
-                image2[i][j] = quarterImage[row][col];
-                image2[i][j+1] = quarterImage[row][col];
-                image2[i+1][j] = quarterImage[row][col];
-                image2[i+1][j+1] = quarterImage[row][col];
+//     }
+//     if(quarter ==3){
+//         row=127;
+//         col=0;
+//         for (int i = 0; i < SIZE; i+=2) {
+//             for (int j = 0; j < SIZE; j += 2) {
+//                 image2[i][j] = quarterImage[row][col];
+//                 image2[i][j+1] = quarterImage[row][col];
+//                 image2[i+1][j] = quarterImage[row][col];
+//                 image2[i+1][j+1] = quarterImage[row][col];
                 
-                col++;
-            }
-            col = 0;
-            row++;
-        }
+//                 col++;
+//             }
+//             col = 0;
+//             row++;
+//         }
         
-    }
-    if(quarter ==4){
-        row=127;
-        col=127;
-        for (int i = 0; i < SIZE; i+=2) {
-            for (int j = 0; j < SIZE; j += 2) {
-                image2[i][j] = quarterImage[row][col];
-                image2[i][j+1] = quarterImage[row][col];
-                image2[i+1][j] = quarterImage[row][col];
-                image2[i+1][j+1] = quarterImage[row][col];
+//     }
+//     if(quarter ==4){
+//         row=127;
+//         col=127;
+//         for (int i = 0; i < SIZE; i+=2) {
+//             for (int j = 0; j < SIZE; j += 2) {
+//                 image2[i][j] = quarterImage[row][col];
+//                 image2[i][j+1] = quarterImage[row][col];
+//                 image2[i+1][j] = quarterImage[row][col];
+//                 image2[i+1][j+1] = quarterImage[row][col];
                 
-                col++;
-            }
-            col = 127;
-            row++;
-        }
+//                 col++;
+//             }
+//             col = 127;
+//             row++;
+//         }
         
-    }
-}
-//_________________________________________
-void shrinkImage(){
-    int size;
-    int row =0 ,col=0;
-    while (true){
-        cout << "Please, Enter the number of size\n\t1- 1/2 size of the image.\n\t2- 1/3 size of the image.\n\t3- 1/4 size of the image."<<endl;
-        cout << "--> ";
-        cin >> size;
-        if (size == 1 || size == 2 || size == 3 )
-            break;
-        else{
-            cout<<"Please, Enter Int from 1 to 3!!..\n\n";
-            cin.ignore();
-        }
-    }
-    if (size == 1){
-        for (int i=0;i<SIZE;i+=2){
-            for(int j=0;j<SIZE;j+=2){
-                image2 [row][col]= image[i][j];
-                col++;
-            }
-            col=0;
-            row++;
-        }
-    }
-    if (size == 2){
-        for (int i=0;i < SIZE; i += 3){
-            for(int j = 0; j < SIZE; j += 3){
-                image2 [row][col]= image[i][j];
-                col++;
-            }
-            col = 0;
-            row++;
-        }
-    }
-    if (size == 3){
-        for (int i=0;i < SIZE; i += 4){
-            for(int j = 0; j < SIZE; j += 4){
-                image2 [row][col]= image[i][j];
-                col++;
-            }
-            col = 0;
-            row++;
-        }
-    }
-}
+//     }
+// }
+// //_________________________________________
+// void shrinkImage(){
+//     int size;
+//     int row =0 ,col=0;
+//     while (true){
+//         cout << "Please, Enter the number of size\n\t1- 1/2 size of the image.\n\t2- 1/3 size of the image.\n\t3- 1/4 size of the image."<<endl;
+//         cout << "--> ";
+//         cin >> size;
+//         if (size == 1 || size == 2 || size == 3 )
+//             break;
+//         else{
+//             cout<<"Please, Enter Int from 1 to 3!!..\n\n";
+//             cin.ignore();
+//         }
+//     }
+//     if (size == 1){
+//         for (int i=0;i<SIZE;i+=2){
+//             for(int j=0;j<SIZE;j+=2){
+//                 image2 [row][col]= image[i][j];
+//                 col++;
+//             }
+//             col=0;
+//             row++;
+//         }
+//     }
+//     if (size == 2){
+//         for (int i=0;i < SIZE; i += 3){
+//             for(int j = 0; j < SIZE; j += 3){
+//                 image2 [row][col]= image[i][j];
+//                 col++;
+//             }
+//             col = 0;
+//             row++;
+//         }
+//     }
+//     if (size == 3){
+//         for (int i=0;i < SIZE; i += 4){
+//             for(int j = 0; j < SIZE; j += 4){
+//                 image2 [row][col]= image[i][j];
+//                 col++;
+//             }
+//             col = 0;
+//             row++;
+//         }
+//     }
+// }
 
 // void shuffleImage(){
 //     unsigned char quarterImage[SIZE][SIZE];
