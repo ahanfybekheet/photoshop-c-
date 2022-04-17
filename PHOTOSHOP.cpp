@@ -14,8 +14,8 @@
 
 using namespace std;
 unsigned char image[SIZE][SIZE][RGB];
-unsigned char image2[SIZE][SIZE];
-unsigned char quarterImage[SIZE][SIZE];
+unsigned char image2[SIZE][SIZE][RGB];
+unsigned char quarterImage[SIZE][SIZE]{RGB};
 char userInput;
 
 
@@ -52,12 +52,12 @@ int main()
     case 50:
         invertFilter();
         break;
-    // case 51:
-    //     mergeImage();
-    //     break;
-    // case 52:
-    //     flipImage();
-    //     break;
+    case 51:
+        mergeImage();
+        break;
+    case 52:
+        flipImage();
+        break;
     // case 53:
     //     rotate();
     //     break;
@@ -133,12 +133,12 @@ void saveImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    // if (userInput == '4' || userInput == '5' || userInput == '8' || userInput == '9' || userInput == 'b'){
-    //     writeRGBBMP(imageFileName, image2);
-    // }
-    // else {
+    if (userInput == '4' || userInput == '5' || userInput == '8' || userInput == '9' || userInput == 'b'){
+        writeRGBBMP(imageFileName, image2);
+    }
+    else {
         writeRGBBMP(imageFileName, image);
-    // }
+    }
 }
 //_________________________________________
 void BW() {
@@ -172,57 +172,63 @@ void invertFilter(){
         }
     }
 }
-// //_________________________________________
-// void mergeImage(){
-//     //Load seconde Image
-//     char mergedImageFileName[100];
+//_________________________________________
+void mergeImage(){
+    //Load seconde Image
+    char mergedImageFileName[100];
 
-//     // Get the seconde photo that want to be merged
-//     cout << "Please enter file name of the image to merge: ";
-//     cin >> mergedImageFileName;
+    // Get the seconde photo that want to be merged
+    cout << "Please enter file name of the image to merge: ";
+    cin >> mergedImageFileName;
 
-//     // Add to it .bmp extension and load image
-//     strcat(mergedImageFileName, ".bmp");
-//     readGSBMP(mergedImageFileName, image2);
+    // Add to it .bmp extension and load image
+    strcat(mergedImageFileName, ".bmp");
+    readRGBBMP(mergedImageFileName, image2);
     
-//     //Merge Two Photos
-//     for (int i = 0; i < SIZE; i++) {
-//         for (int j = 0; j < SIZE; j++) {
-//                 image[i][j] = (image[i][j]/2) + (image2[i][j]/2);
-//         }
-//     }
-// }
-// //_________________________________________
-// void flipImage(){
-//     int choose;
-//     while (true)
-//     {
-//         cout << "Flip (1) for horizontally or (2) for vertically: ";
-//         cin >> choose;
-//         if (choose == 1 || choose == 2){
-//             break;
-//         }
-//         else {
-//             cout << "Invalid input.";
-//             cin.ignore();
-//         }
-//     }
-//     if (choose == 1){
-//         for (int i =0 ;i <255 ;i++){
-//             for (int j =255 ;j > 0 ;j--){
-//                 image2[i][255 - j] = image [i][j];
+    //Merge Two Photos
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k =0 ; k <RGB;k++){
+                image[i][j][k] = (image[i][j][k]/2) + (image2[i][j][k]/2);
+            }
+        }
+    }
+}
+//_________________________________________
+void flipImage(){
+    int choose;
+    while (true)
+    {
+        cout << "Flip (1) for horizontally or (2) for vertically: ";
+        cin >> choose;
+        if (choose == 1 || choose == 2){
+            break;
+        }
+        else {
+            cout << "Invalid input.";
+            cin.ignore();
+        }
+    }
+    if (choose == 1){
+        for (int i =0 ;i <255 ;i++){
+            for (int j =255 ;j > 0 ;j--){
+                for (int k =0 ; k <RGB;k++){
+                    image2[i][255 - j][k] = image [i][j][k];
+                }
                 
-//             }
-//         } 
-//     }
-//     else {
-//         for (int i =0 ;i <255 ;i++){
-//             for (int j =0 ;j <255 ;j++){
-//                 image2[i][j] = image [255-i][j];
-//             }
-//         } 
-//     }
-// }
+            }
+        } 
+    }
+    else {
+        for (int i =0 ;i <255 ;i++){
+            for (int j =0 ;j <255 ;j++){
+                for (int k =0 ; k <RGB;k++){
+                    image2[i][j][k] = image [255-i][j][k];
+                }
+            }
+        } 
+    }
+}
 // //_________________________________________
 // void darkenAndLightenImage(){
 //     int chooses;
