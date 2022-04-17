@@ -550,11 +550,12 @@ void mirror(){
             for (int j = 0; j< SIZE; j++) {
                 for (int k=0 ;k<RGB;k++){
                     if(j>(SIZE/2)){
-                        image[i][j][k]=image[i][(SIZE/2)-x][k];
-                        x++;
+                        image[i][j][k]=image[i][(SIZE/2)-x][k]; 
                     }
                 }
-                x-=3;
+                if (j>(SIZE/2)){
+                    x++;
+                }
             }
             x=0;
         }
@@ -565,8 +566,11 @@ void mirror(){
                 for (int k=0 ;k<RGB;k++){
                     if(j<(SIZE/2)){
                         image[i][j][k]=image[i][SIZE-x][k];
-                        x++;
+                        
                     }
+                }
+                if(j<(SIZE/2)){
+                    x++;
                 }
 
             }
