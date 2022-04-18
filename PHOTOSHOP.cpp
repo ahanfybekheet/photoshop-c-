@@ -25,12 +25,8 @@ void BW();
 void invertFilter();
 void mergeImage();
 void flipImage();
-<<<<<<< HEAD
 void rotate();
-
-=======
 void darkenAndLightenImage();
->>>>>>> master
 int main()
 {
     cout << "Ahlan ya user ya habibi\n";
@@ -53,14 +49,11 @@ int main()
     case 52:
         flipImage();
         break;
-<<<<<<< HEAD
     case 54:
         rotate();
         break;
-=======
     case 53:
         darkenAndLightenImage();
->>>>>>> master
     default:
         break;
     }
