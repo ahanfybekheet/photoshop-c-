@@ -76,13 +76,13 @@ int main()
     case 57:
         shrinkImage();
         break;
-    case 'a':
+    case 97:
         mirror();
         break;
     case 98:
-        //shuffleImage();
+        shuffleImage();
         break;
-    case 'c':
+    case 99:
         blur();
         break;
     default:
@@ -537,57 +537,99 @@ void mirror(){
         }
     }
 }
-// //_________________________________________
-// void shuffleImage(){
-//     unsigned char quarterImage[SIZE][SIZE];
-//     unsigned char quarterImage2[SIZE][SIZE];
-//     unsigned char quarterImage3[SIZE][SIZE];
-//     unsigned char quarterImage4[SIZE][SIZE];
-//     int a ,b,c,d,row=0,col=0;
-//     cin >> a >> b >> c >> d;
-//     for (int i = 0; i < 127; i ++){
-//         for (int j = 0; j < 127; j ++){
-//             quarterImage[row][col] = image[i][j];
-//         }
-//     }
-//     for (int i = 0; i < 127; i ++){
-//         for (int j = 127; j < 255; j ++){
-//             quarterImage2[i][j] = image[i][j];
-//         }
-//     }
-//     for (int i = 127; i < 255; i ++){
-//         for (int j = 0; j < 127; j ++){
-//             quarterImage3[i][j] = image[i][j];
-//         }
-//     }
-//     for (int i = 127; i < 255; i ++){
-//         for (int j = 127; j < 255; j ++){
-//             quarterImage4[i][j] = image[i][j];
-//         }
-//     }
-//     unsigned char quarters[]={quarterImage, quarterImage2, quarterImage3, quarterImage4};
-//     for (int i = 0; i < 127; i ++){
-//         for (int j = 0; j < 127; j ++){
-//             quarterImage[i][j] = quarters[a-1][i][j];
-//         }
-//     }
-//     for (int i = 0; i < 127; i ++){
-//         for (int j = 127; j < 255; j ++){
-//             quarterImage2[i][j] = quarters[b-1][i][j];
-//         }
-//     }
-//     for (int i = 127; i < 255; i ++){
-//         for (int j = 0; j < 127; j ++){
-//             quarterImage3[i][j] = image[i][j];
-//         }
-//     }
-//     for (int i = 127; i < 255; i ++){
-//         for (int j = 127; j < 255; j ++){
-//             quarterImage4[i][j] = image[i][j];
-//         }
-//     }
+//_________________________________________
+void shuffleImage(){
+    //declare vars
+    unsigned char quarters[4][SIZE][SIZE];
+    int row=0,col=0,order[4];
+    //end of declare vars
 
-// }
+    //create quarters by 4 loops
+    for (int i = 0; i < 127; i ++){
+        for (int j = 0; j < 127; j ++){
+            quarters[0][row][col] = image[i][j];
+            col++;
+        }
+        row++;
+        col=0;
+    }
+    row=0,col=0;
+    for (int i = 0; i < 127; i ++){
+        for (int j = 127; j < 255; j ++){
+            quarters[1][row][col] = image[i][j];
+            col++;
+        }
+        row++;
+        col=0;
+        
+    }
+    row=0,col=0;
+    for (int i = 127; i < 255; i ++){
+        for (int j = 0; j < 127; j ++){
+            quarters[2][row][col] = image[i][j];
+            col++;
+        }
+        row++;
+        col=0;
+    }
+    row=0,col=0;
+    for (int i = 127; i < 255; i ++){
+        for (int j = 127; j < 255; j ++){
+            quarters[3][row][col] = image[i][j];
+            col++;
+        }
+        row++;
+        col=0;
+    }
+    //end of create quarters by 4 loops 
+
+
+    //take the order of photo
+    cout<<"Please, Enter the order of the image (e.g:4 3 2 1)\n--> ";
+    for (int i = 0; i < 4; i++){
+        cin>>order[i];
+    }
+    //end of take the order of photo
+
+    //create the final image
+    col=0,row=0;
+    for (int i = 0; i < 127; i ++){
+        for (int j = 0; j < 127; j ++){
+            image2[i][j] = quarters[order[0]-1][row][col];
+            col++;
+        }
+        row++;
+        col=0;
+    }
+    row=0,col=0;
+    for (int i = 0; i < 127; i ++){
+        for (int j = 127; j < 255; j ++){
+            image2[i][j] = quarters[order[1]-1][row][col];
+            col++;
+        }
+        row++;
+        col=0;
+    }
+    row=0,col=0;
+    for (int i = 127; i < 255; i ++){
+        for (int j = 0; j < 127; j ++){
+            image2[i][j] = quarters[order[2]-1][row][col];
+            col++;
+        }
+        row++;
+        col=0;
+    }
+    row=0,col=0;
+    for (int i = 127; i < 255; i ++){
+        for (int j = 127; j < 255; j ++){
+            image2[i][j] = quarters[order[3]-1][row][col];
+            col++;
+        }
+        row++;
+        col=0;
+    }
+    //end of create the final image
+}
 //_________________________________________
 void blur() {
     for (int i = 0; i < SIZE; i++) {
