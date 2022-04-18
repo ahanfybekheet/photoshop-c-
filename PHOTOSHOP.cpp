@@ -14,8 +14,6 @@
 
 using namespace std;
 unsigned char image[SIZE][SIZE];
-unsigned char image2[SIZE][SIZE];
-unsigned char quarterImage[SIZE][SIZE];
 char userInput;
 
 
@@ -42,54 +40,58 @@ int main()
 {
     cout << "Ahlan ya user ya habibi\n";
     loadImage();
-    menuDisplay();
-    switch (userInput)
-    {
-    case 48: // if userInput == 0
-        exit(0);
-        break;
-    case 49:
-        BW();
-        break;
-    case 50:
-        invertFilter();
-        break;
-    case 51:
-        mergeImage();
-        break;
-    case 52:
-        flipImage();
-        break;
-    case 53:
-        rotate();
-        break;
-    case 54:
-        darkenAndLightenImage();
-        break;
-    case 56:
-        enlargeImage();
-        break;
-    case 55:
-        BW();
-        detect_edge();
-        break;
-    case 57:
-        shrinkImage();
-        break;
-    case 97:
-        mirror();
-        break;
-    case 98:
-        shuffleImage();
-        break;
-    case 99:
-        blur();
-        break;
-    default:
-        break;
+    while (true){
+        menuDisplay();
+        switch (userInput)
+        {
+        case 48: // if userInput == 0
+            cout<<"Thanks for using fcai photoshop :)";
+            return 0;
+        case 49:
+            BW();
+            break;
+        case 50:
+            invertFilter();
+            break;
+        case 51:
+            mergeImage();
+            break;
+        case 52:
+            flipImage();
+            break;
+        case 53:
+            rotate();
+            break;
+        case 54:
+            darkenAndLightenImage();
+            break;
+        case 56:
+            enlargeImage();
+            break;
+        case 55:
+            BW();
+            detect_edge();
+            break;
+        case 57:
+            shrinkImage();
+            break;
+        case 97:
+            mirror();
+            break;
+        case 98:
+            shuffleImage();
+            break;
+        case 99:
+            blur();
+            break;
+        case 115:
+            saveImage();
+            break;
+        default:
+            cout<<"Please, choose valid input :)";
+            break;
+        }
     }
-    saveImage();
-    return 0;
 }
 
 //_________________________________________
@@ -145,12 +147,8 @@ void saveImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    if (userInput == '4' || userInput == '5' || userInput == '8' || userInput == '9' || userInput == 'b'){
-        writeGSBMP(imageFileName, image2);
-    }
-    else {
-        writeGSBMP(imageFileName, image);
-    }
+    writeGSBMP(imageFileName, image);
+    
 }
 //_________________________________________
 void BW() {
@@ -176,6 +174,7 @@ void invertFilter(){
 }
 //_________________________________________
 void mergeImage(){
+    unsigned char image2[SIZE][SIZE];
     //Load seconde Image
     char mergedImageFileName[100];
 
@@ -196,6 +195,7 @@ void mergeImage(){
 }
 //_________________________________________
 void flipImage(){
+    unsigned char image2[SIZE][SIZE];
     int choose;
     while (true)
     {
@@ -224,9 +224,15 @@ void flipImage(){
             }
         } 
     }
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+                image[i][j] = image2[i][j];
+        }
+    }
 }
 //_________________________________________
 void rotate(){
+    unsigned char image2[SIZE][SIZE];
     int rot;
 
     while (true){
@@ -270,6 +276,11 @@ void rotate(){
             }
         }
     }
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+                image[i][j] = image2[i][j];
+        }
+    }
 }
 //_________________________________________
 void darkenAndLightenImage(){
@@ -308,6 +319,7 @@ void darkenAndLightenImage(){
 }
 //_________________________________________
 void enlargeImage(){
+    unsigned char image2[SIZE][SIZE],quarterImage[SIZE][SIZE];
     int quarter;
     int row = 0 , col = 0;
     while (true){
@@ -418,6 +430,11 @@ void enlargeImage(){
         }
         
     }
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+                image[i][j] = image2[i][j];
+        }
+    }
 }
 //_________________________________________
 void detect_edge() {
@@ -434,6 +451,7 @@ void detect_edge() {
 }
 //_________________________________________
 void shrinkImage(){
+    unsigned char image2[SIZE][SIZE];
     int size;
     int row =0 ,col=0;
     while (true){
@@ -475,6 +493,11 @@ void shrinkImage(){
             }
             col = 0;
             row++;
+        }
+    }
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+                image[i][j] = image2[i][j];
         }
     }
 }
@@ -540,7 +563,7 @@ void mirror(){
 //_________________________________________
 void shuffleImage(){
     //declare vars
-    unsigned char quarters[4][SIZE][SIZE];
+    unsigned char quarters[4][SIZE][SIZE],image2[SIZE][SIZE];
     int row=0,col=0,order[4];
     //end of declare vars
 
@@ -629,6 +652,12 @@ void shuffleImage(){
         col=0;
     }
     //end of create the final image
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+                image[i][j] = image2[i][j];
+        }
+    }
 }
 //_________________________________________
 void blur() {
