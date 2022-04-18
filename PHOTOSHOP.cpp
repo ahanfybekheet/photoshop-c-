@@ -88,9 +88,6 @@ int main()
         case 115:
             saveImage();
             break;
-        default:
-            cout<<"Please, choose valid input :)";
-            break;
         }
     }
 }
