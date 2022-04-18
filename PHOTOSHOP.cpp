@@ -1,10 +1,11 @@
-// Program: demo2.cpp
-// Purpose: Demonstrate use of bmplip for handling
-//          bmp colored and grayscale images
-//          Program load a gray image and store in another file
-// Author:  Mohammad El-Ramly
-// Date:    30 March 2018
-// Version: 1.0
+// FCI – Programming 1 – 2022 - Assignment 3
+// Program Name: CS112–S10-20210210 -20210014-20210484-A3-Part2.cpp
+// Last Modification Date: 04/07/2022
+// Author1 and ID and Group: Ahmed Hanafy Bekheet - 20210014 - S10
+// Author2 and ID and Group: Abdelrhman Mostafa Hessain - 20210210 - S10
+// Author3 and ID and Group: Youssef Mohammed Atya - 20210484 - S10
+// Teaching Assistant: Afaf Abdelmonem
+// Purpose: Edit grayscale photo and add filter to it.
 
 #include <iostream>
 #include <fstream>
@@ -187,7 +188,7 @@ void mergeImage(){
     //Merge Two Photos
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-                image[i][j] = image[i][j] + (image2[i][j]/2);
+                image[i][j] = (image[i][j]/2) + (image2[i][j]/2);
         }
     }
 }
