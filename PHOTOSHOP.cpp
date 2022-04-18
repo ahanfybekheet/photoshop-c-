@@ -1,10 +1,11 @@
-// Program: demo2.cpp
-// Purpose: Demonstrate use of bmplip for handling
-//          bmp colored and grayscale images
-//          Program load a gray image and store in another file
-// Author:  Mohammad El-Ramly
-// Date:    30 March 2018
-// Version: 1.0
+// FCI – Programming 1 – 2022 - Assignment 3
+// Program Name: CS112–S10-20210210 -20210014-20210484-A3-Part2.cpp
+// Last Modification Date: 04/19/2022
+// Author1 and ID and Group: Ahmed Hanafy Bekheet - 20210014 - S10
+// Author2 and ID and Group: Abdelrhman Mostafa Hessain - 20210210 - S10
+// Author3 and ID and Group: Youssef Mohammed Atya - 20210484 - S10
+// Teaching Assistant: Afaf Abdelmonem
+// Purpose: Edit RGB photo and add filter to it.
 
 #include <iostream>
 #include <fstream>
@@ -14,8 +15,6 @@
 
 using namespace std;
 unsigned char image[SIZE][SIZE][RGB];
-unsigned char image2[SIZE][SIZE][RGB];
-unsigned char quarterImage[SIZE][SIZE][RGB];
 char userInput;
 
 
@@ -79,8 +78,8 @@ int main()
     case 'a':
         mirror();
         break;
-    case 98:
-        //shuffleImage();
+    case 'b':
+        shuffleImage();
         break;
     case 'c':
         blur();
@@ -144,12 +143,7 @@ void saveImage() {
 
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
-    if (userInput == '4' || userInput == '5' || userInput == '8' || userInput == '9' || userInput == 'b'){
-        writeRGBBMP(imageFileName, image2);
-    }
-    else {
-        writeRGBBMP(imageFileName, image);
-    }
+    writeRGBBMP(imageFileName, image);
 }
 //_________________________________________
 void BW() {
@@ -185,6 +179,7 @@ void invertFilter(){
 void mergeImage(){
     //Load seconde Image
     char mergedImageFileName[100];
+    unsigned char image2[SIZE][SIZE][RGB];
 
     // Get the seconde photo that want to be merged
     cout << "Please enter file name of the image to merge: ";
@@ -205,6 +200,7 @@ void mergeImage(){
 }
 //_________________________________________
 void flipImage(){
+    unsigned char image2[SIZE][SIZE][RGB];
     int choose;
     while (true)
     {
@@ -237,11 +233,18 @@ void flipImage(){
             }
         } 
     }
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k =0 ; k <RGB;k++){
+                image[i][j][k] = image2 [i][j][k];
+            }
+        }
+    }
 }
 //_________________________________________
 void rotate(){
     int rot;
-
+    unsigned char image2[SIZE][SIZE][RGB];
     while (true){
         cout << "Enter the degree from (90, 180, 270) to rotate: ";
         cin>>rot;
@@ -291,6 +294,13 @@ void rotate(){
                 for (int k=0 ;k<RGB;k++){
                     image2[i][j][k] = image[i][255-j][k];
                 }
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k =0 ; k <RGB;k++){
+                image[i][j][k] = image2 [i][j][k];
             }
         }
     }
@@ -352,6 +362,7 @@ void detect_edge() {
 }
 //_________________________________________
 void enlargeImage(){
+    unsigned char image2[SIZE][SIZE][RGB], quarterImage[SIZE][SIZE][RGB];
     int quarter;
     int row = 0 , col = 0;
     while (true){
@@ -478,9 +489,17 @@ void enlargeImage(){
         }
         
     }
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k =0 ; k <RGB;k++){
+                image[i][j][k] = image2 [i][j][k];
+            }
+        }
+    }
 }
 //_________________________________________
 void shrinkImage(){
+    unsigned char image2[SIZE][SIZE][RGB];
     int size;
     int row =0 ,col=0;
     while (true){
@@ -528,6 +547,18 @@ void shrinkImage(){
             }
             col = 0;
             row++;
+        }
+    }
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k =0 ; k <RGB;k++){
+                if (i>128 || j >128){
+                    image [i][j][k]=0;
+                }
+                else {
+                    image[i][j][k] = image2 [i][j][k];
+                }
+            }
         }
     }
 }
@@ -601,57 +632,122 @@ void mirror(){
         }
     }
 }
-// //_________________________________________
-// void shuffleImage(){
-//     unsigned char quarterImage[SIZE][SIZE];
-//     unsigned char quarterImage2[SIZE][SIZE];
-//     unsigned char quarterImage3[SIZE][SIZE];
-//     unsigned char quarterImage4[SIZE][SIZE];
-//     int a ,b,c,d,row=0,col=0;
-//     cin >> a >> b >> c >> d;
-//     for (int i = 0; i < 127; i ++){
-//         for (int j = 0; j < 127; j ++){
-//             quarterImage[row][col] = image[i][j];
-//         }
-//     }
-//     for (int i = 0; i < 127; i ++){
-//         for (int j = 127; j < 255; j ++){
-//             quarterImage2[i][j] = image[i][j];
-//         }
-//     }
-//     for (int i = 127; i < 255; i ++){
-//         for (int j = 0; j < 127; j ++){
-//             quarterImage3[i][j] = image[i][j];
-//         }
-//     }
-//     for (int i = 127; i < 255; i ++){
-//         for (int j = 127; j < 255; j ++){
-//             quarterImage4[i][j] = image[i][j];
-//         }
-//     }
-//     unsigned char quarters[]={quarterImage, quarterImage2, quarterImage3, quarterImage4};
-//     for (int i = 0; i < 127; i ++){
-//         for (int j = 0; j < 127; j ++){
-//             quarterImage[i][j] = quarters[a-1][i][j];
-//         }
-//     }
-//     for (int i = 0; i < 127; i ++){
-//         for (int j = 127; j < 255; j ++){
-//             quarterImage2[i][j] = quarters[b-1][i][j];
-//         }
-//     }
-//     for (int i = 127; i < 255; i ++){
-//         for (int j = 0; j < 127; j ++){
-//             quarterImage3[i][j] = image[i][j];
-//         }
-//     }
-//     for (int i = 127; i < 255; i ++){
-//         for (int j = 127; j < 255; j ++){
-//             quarterImage4[i][j] = image[i][j];
-//         }
-//     }
+//_________________________________________
+void shuffleImage() {
+    //declare vars
+    unsigned char quarters[4][SIZE][SIZE][RGB], image2[SIZE][SIZE][RGB];
+    int row = 0, col = 0, order[4];
+    //end of declare vars
 
-// }
+    //create quarters by 4 loops
+    for (int i = 0; i < 127; i++) {
+        for (int j = 0; j < 127; j++) {
+            for (int k=0;k<RGB;k++){
+                quarters[0][row][col][k] = image[i][j][k];
+            }
+            col++;
+        }
+        row++;
+        col = 0;
+    }
+    row = 0, col = 0;
+    for (int i = 0; i < 127; i++) {
+        for (int j = 127; j < 255; j++) {
+            for (int k=0;k<RGB;k++){
+                quarters[1][row][col][k] = image[i][j][k];
+            }
+            col++;
+        }
+        row++;
+        col = 0;
+
+    }
+    row = 0, col = 0;
+    for (int i = 127; i < 255; i++) {
+        for (int j = 0; j < 127; j++) {
+            for (int k=0;k<RGB;k++){
+                quarters[2][row][col][k] = image[i][j][k];
+            }
+            col++;
+        }
+        row++;
+        col = 0;
+    }
+    row = 0, col = 0;
+    for (int i = 127; i < 255; i++) {
+        for (int j = 127; j < 255; j++) {
+            for (int k=0;k<RGB;k++){
+                quarters[3][row][col][k] = image[i][j][k];
+            }
+            col++;
+        }
+        row++;
+        col = 0;
+    }
+    //end of create quarters by 4 loops 
+
+
+    //take the order of photo
+    cout << "Please, Enter the order of the image (e.g:4 3 2 1)\n--> ";
+    for (int i = 0; i < 4; i++) {
+        cin >> order[i];
+    }
+    //end of take the order of photo
+
+    //create the final image
+    col = 0, row = 0;
+    for (int i = 0; i < 127; i++) {
+        for (int j = 0; j < 127; j++) {
+            for (int k=0;k<RGB;k++){
+                image2[i][j][k] = quarters[order[0] - 1][row][col][k];
+            }
+            col++;
+        }
+        row++;
+        col = 0;
+    }
+    row = 0, col = 0;
+    for (int i = 0; i < 127; i++) {
+        for (int j = 127; j < 255; j++) {
+            for (int k=0;k<RGB;k++){
+                image2[i][j][k] = quarters[order[1] - 1][row][col][k];
+            }
+            col++;
+        }
+        row++;
+        col = 0;
+    }
+    row = 0, col = 0;
+    for (int i = 127; i < 255; i++) {
+        for (int j = 0; j < 127; j++) {
+            for (int k=0;k<RGB;k++){
+                image2[i][j][k] = quarters[order[2] - 1][row][col][k];
+            }
+            col++;
+        }
+        row++;
+        col = 0;
+    }
+    row = 0, col = 0;
+    for (int i = 127; i < 255; i++) {
+        for (int j = 127; j < 255; j++) {
+            for (int k=0;k<RGB;k++){
+                image2[i][j][k] = quarters[order[3] - 1][row][col][k];
+            }
+            col++;
+        }
+        row++;
+        col = 0;
+    }
+    //end of create the final image
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k=0;k<RGB;k++){
+                image[i][j][k] = image2[i][j][k];
+            }
+        }
+    }
+}
 //_________________________________________
 void blur() {
     for (int i = 0; i < SIZE; i++) {
