@@ -41,53 +41,55 @@ int main()
 {
     cout << "Ahlan ya user ya habibi\n";
     loadImage();
-    menuDisplay();
-    switch (userInput)
-    {
-    case 48: // if userInput == 0
-        exit(0);
-        break;
-    case 49:
-        BW();
-        break;
-    case 50:
-        invertFilter();
-        break;
-    case 51:
-        mergeImage();
-        break;
-    case 52:
-        flipImage();
-        break;
-    case 53:
-        rotate();
-        break;
-    case 54:
-        darkenAndLightenImage();
-        break;
-    case 56:
-        enlargeImage();
-        break;
-    case 55:
-        BW();
-        detect_edge();
-        break;
-    case 57:
-        shrinkImage();
-        break;
-    case 'a':
-        mirror();
-        break;
-    case 'b':
-        shuffleImage();
-        break;
-    case 'c':
-        blur();
-        break;
-    default:
-        break;
+    while (true){
+        menuDisplay();
+        switch (userInput)
+        {
+        case 48: // if userInput == 0
+            exit(0);
+            break;
+        case 49:
+            BW();
+            break;
+        case 50:
+            invertFilter();
+            break;
+        case 51:
+            mergeImage();
+            break;
+        case 52:
+            flipImage();
+            break;
+        case 53:
+            rotate();
+            break;
+        case 54:
+            darkenAndLightenImage();
+            break;
+        case 56:
+            enlargeImage();
+            break;
+        case 55:
+            BW();
+            detect_edge();
+            break;
+        case 57:
+            shrinkImage();
+            break;
+        case 97:
+            mirror();
+            break;
+        case 98:
+            shuffleImage();
+            break;
+        case 99:
+            blur();
+            break;
+        case 115:
+            saveImage();
+            break;
+        }
     }
-    saveImage();
     return 0;
 }
 
